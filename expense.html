@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: hsl(36, 20%, 90%);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    #container {
+        background-color: #93cf1c;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px rgba(246, 76, 9, 0.1);
+        width: 80%;
+        max-width: 600px;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    form {
+        margin-bottom: 20px;
+        text-align: left; /* Center-align form elements */
+    }
+    input[type="text"], input[type="number"], input[type="date"] {
+        width: calc(100% - 16px);
+        padding: 12px;
+        margin: 5px 0;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    input[type="submit"] {
+        background-color: #1e1d1c;
+        color: white;
+        padding: 6px 6px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 40%;
+        display: inline-block;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #d32f2f;
+    }
+</style>
+</head>
+<body>
+
+<div id="container">
+    <h2>Expense Tracker</h2>
+
+    <form id="expenseForm">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+        <input type="submit" value="Add Expense">
+    </form>
+
+    <table id="expenseTable">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="expenseList">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function addExpense(amount, category, date) {
+        const expenseList = document.getElementById('expenseList');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${amount}</td>
+            <td>${category}</td>
+            <td>${date}</td>
+            <td>
+                <button onclick="editExpense(this)">Edit</button>
+                <button onclick="deleteExpense(this)">Delete</button>
+            </td>
+        `;
+        expenseList.appendChild(newRow);
+    }
+    document.getElementById('expenseForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const amount = document.getElementById('amount').value;
+        const category = document.getElementById('category').value;
+        const date = document.getElementById('date').value;
+        addExpense(amount, category, date);
+        document.getElementById('amount').value = '';
+        document.getElementById('category').value = '';
+        document.getElementById('date').value = '';
+    });
+    function editExpense(button) {
+        const row = button.parentNode.parentNode;
+        const cells = row.querySelectorAll('td');
+        const amount = cells[0].textContent;
+        const category = cells[1].textContent;
+        const date = cells[2].textContent;
+
+        document.getElementById('amount').value = amount;
+        document.getElementById('category').value = category;
+        document.getElementById('date').value = date;
+
+        row.parentNode.removeChild(row);
+    }
+
+
+    function deleteExpense(button) {
+        const row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+</script>
+
+</body>
+</html>
